@@ -1,6 +1,13 @@
 import { Injectable, Inject, OnModuleDestroy, OnApplicationBootstrap } from '@nestjs/common';
-import delay = require('delay');
+import { setTimeout } from "node:timers/promises";
 import * as rdkafka from 'node-rdkafka';
+
+
+
+/**
+ * Kafka service built using a pre-configured connection provider.
+ * @deprecated you should inject directly a `rdkafka.Producer`, `rdkafka.KafkaConsumer` or `KAFKA_ADMIN_CLIENT_PROVIDER` instance
+ */
 
 @Injectable()
 export class KafkaService implements OnApplicationBootstrap, OnModuleDestroy {
@@ -43,22 +50,22 @@ export class KafkaService implements OnApplicationBootstrap, OnModuleDestroy {
     public async disconnect(): Promise<void> {
         this.keepConsumerRunning = false;
         if (this.consumer && this.consumer.isConnected) {
-            await new Promise(async (resolve) => {
+            await new Promise<void>(async (resolve) => {
                 while (this.isConsumingMsg) {
-                    await delay(500);
+                    await setTimeout(500);
                 }
                 this.consumer.disconnect(() => resolve());
             });
         }
 
         if (this.producer && this.producer.isConnected) {
-            await new Promise((resolve) => {
+            await new Promise<void>((resolve) => {
                 this.producer.disconnect(() => resolve());
             });
         }
 
         if (this.adminClient) {
-            await new Promise((resolve) => {
+            await new Promise<void>((resolve) => {
                 this.adminClient.disconnect();
                 resolve();
             });
@@ -75,7 +82,7 @@ export class KafkaService implements OnApplicationBootstrap, OnModuleDestroy {
 
     private async createTopics() {
         const topicConfigs = Array.from(this.subscriberMap.values()).map(v => v.config);
-        const promises = topicConfigs.map((config) => new Promise((resolve) => this.adminClient.createTopic(config, (err) => {
+        const promises = topicConfigs.map((config) => new Promise<void>((resolve) => this.adminClient.createTopic(config, (err) => {
             if (err) {
                 console.log(err);
             }
@@ -118,7 +125,7 @@ export class KafkaService implements OnApplicationBootstrap, OnModuleDestroy {
     private async consumeMessages() {
         while (this.keepConsumerRunning) {
             this.isConsumingMsg = true;
-            await new Promise((resolve, reject) => {
+            await new Promise<void>((resolve, reject) => {
                 try {
                     this.consumer.consume(100, async (err, messages) => {
                         await this.consumeMessage(err, messages);
