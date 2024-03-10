@@ -1,6 +1,6 @@
 import { Test } from "@nestjs/testing";
 import { KafkaConsumer } from "node-rdkafka";
-import { KafkaModule } from "../src";
+import { KafkaModule, NodeRdKafkaModule } from "../src";
 
 describe("App start if the consumer can't connect and autoConnect=false", () => {
   let app;
@@ -8,7 +8,7 @@ describe("App start if the consumer can't connect and autoConnect=false", () => 
   it("should not throw an exception", async () => {
     const moduleFixture = await Test.createTestingModule({
       imports: [
-        KafkaModule.forRoot({
+        NodeRdKafkaModule.forRoot({
           consumer: {
             autoConnect: false,
             conf: {
@@ -37,7 +37,7 @@ describe("App doesn't start if the consumer can't connect and autoConnect=true",
     const fn = async () => {
       await Test.createTestingModule({
         imports: [
-          KafkaModule.forRoot({
+          NodeRdKafkaModule.forRoot({
             consumer: {
               autoConnect: true,
               conf: {
@@ -62,7 +62,7 @@ describe("App fail fast if the consumer can't connect, autoConnect=false and tim
     const fn = async () => {
       const moduleFixture = await Test.createTestingModule({
         imports: [
-          KafkaModule.forRoot({
+          NodeRdKafkaModule.forRoot({
             consumer: {
               autoConnect: false,
               conf: {
