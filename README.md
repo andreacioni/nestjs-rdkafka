@@ -3,7 +3,7 @@
 [![NPM](https://nodei.co/npm/nestjs-rdkafka.png)](https://www.npmjs.com/package/nestjs-rdkafka)
 
 [![npm version](https://badge.fury.io/js/nestjs-rdkafka.svg)](https://badge.fury.io/js/nestjs-rdkafka)
-[![Build Status](https://travis-ci.org/a97001/nestjs-rdkafka.svg?branch=main)](https://travis-ci.org/a97001/nestjs-rdkafka)
+[![Build & Test](https://github.com/andreacioni/nestjs-rdkafka/actions/workflows/main.yml/badge.svg)](https://github.com/andreacioni/nestjs-rdkafka/actions/workflows/main.yml)
 ![npm](https://img.shields.io/npm/dm/nestjs-rdkafka)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/nestjs-rdkafka)  
 [![Maintainability](https://api.codeclimate.com/v1/badges/53b44fd83fa37a8d7dba/maintainability)](https://codeclimate.com/github/a97001/nestjs-rdkafka/maintainability)
