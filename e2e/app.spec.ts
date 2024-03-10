@@ -4,7 +4,7 @@ import { Test } from "@nestjs/testing";
 import { IAdminClient, KafkaConsumer, Producer } from "node-rdkafka";
 import { setTimeout } from "node:timers/promises";
 import { StartedDockerComposeEnvironment } from "testcontainers";
-import { KafkaModule, KafkaService } from "../src";
+import { NodeRdKafkaModule, KafkaService } from "../src";
 import { KAFKA_ADMIN_CLIENT_PROVIDER } from "../src/kafka/providers/kafka.connection";
 import {
   consumerConnect,
@@ -45,7 +45,7 @@ const deleteTopic = async (admin: IAdminClient) => {
   });
 };
 
-describe("App consuming KafkaModule build with forRootAsync", () => {
+describe("App consuming NodeRdKafkaModule build with forRootAsync", () => {
   let app: NestApplication;
   let startedContainer: StartedDockerComposeEnvironment;
 
@@ -59,7 +59,7 @@ describe("App consuming KafkaModule build with forRootAsync", () => {
           groupId: "nestjs-rdkafka-test",
           securityProtocol: "plaintext",
         })),
-        KafkaModule.forRootAsync({
+        NodeRdKafkaModule.forRootAsync({
           inject: [ConfigService],
           useFactory: (config: ConfigService) => {
             return {
@@ -113,7 +113,7 @@ describe("App produce and consume message asynchronously", () => {
 
     const moduleFixture = await Test.createTestingModule({
       imports: [
-        KafkaModule.forRoot({
+        NodeRdKafkaModule.forRoot({
           consumer: {
             conf: {
               "group.id": "nestjs-rdkafka-test",
@@ -187,7 +187,7 @@ describe("App produce and consume message synchronously", () => {
 
     const moduleFixture = await Test.createTestingModule({
       imports: [
-        KafkaModule.forRoot({
+        NodeRdKafkaModule.forRoot({
           consumer: {
             conf: {
               "group.id": "nestjs-rdkafka-test",
@@ -295,7 +295,7 @@ describe("App produce and consume message with auto connect disabled", () => {
 
     const moduleFixture = await Test.createTestingModule({
       imports: [
-        KafkaModule.forRoot({
+        NodeRdKafkaModule.forRoot({
           consumer: {
             autoConnect: false,
             conf: {

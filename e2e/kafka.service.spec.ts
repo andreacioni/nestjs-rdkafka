@@ -59,7 +59,7 @@ describe("KafkaService", () => {
     },
   ) => {
     module = await Test.createTestingModule({
-      imports: [KafkaModule.forRoot(options)],
+      imports: [KafkaModule.forRootAsync(options)],
       providers: [KafkaService],
     }).compile();
     service = module.get<KafkaService>(KafkaService);
